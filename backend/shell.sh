@@ -1,0 +1,1 @@
+C:/Users/Xbei/.virtualenvs/backend-gxIBmQ82/Scripts/Activate.ps1
