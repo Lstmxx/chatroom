@@ -19,15 +19,7 @@ class User(db.Model):
     password = db.Column(db.String(64))
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
     avatar_image = db.Column(db.String(64))
-    # root_id = db.Column(db.Integer, db.ForeignKey('authorization.id'), index = True)
-    
-class Authorization(db.Model):
-    __tablename__ = 'authorization'
-    id = db.Column(db.Integer, primary_key=True)
-    create_time = db.Column(db.DateTime, default=datetime.utcnow, index = True)
-    update_time = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, index = True)
-    name = db.Column(db.String(64))
-    root = db.Column(db.Integer)
+    room_id_set = db.Column(db.Text(length=(2**31)-1))
 
 class RoomRecord(db.Model):
     __tablename__ = 'room_record'

@@ -1,24 +1,22 @@
 from flask import request, jsonify, g, session, make_response
 import click
 from init.init_params import app, db
-# from toJosn import JSONHelper
-# from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from blueprint.file import file_bp
 from blueprint.user import user_bp
+from blueprint.room import room_bp
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
-# from blueprint.push import socketio
 import time
 import os
 
 @app.cli.command()
 @click.option('--drop', is_flag=True, help='create after drop')
 def initdb(drop):
-    # if drop:
-    #     click.confirm('真的要清除数据库吗', abort=True)
-    #     db.drop_all()
-    #     click.echo('Drop success')
-    db.create_all()
+    if drop:
+        click.confirm('真的要清除数据库吗', abort=True)
+        db.drop_all()
+        click.echo('Drop success')
+    # db.create_all()
     click.echo('初始化数据库成功')
 
 def background_chat(msg, sid):
@@ -78,6 +76,7 @@ def disconnect():
 def register_blueprint():
     app.register_blueprint(file_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(room_bp)
 
 if __name__ == "__main__":
     register_blueprint()
