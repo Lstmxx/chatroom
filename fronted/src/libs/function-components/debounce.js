@@ -20,7 +20,7 @@ const debounce = (func, time, type, ctx) => {
   } else if (type === 3) { //  立即执行防抖函数
     rtn = (...params) => {
       if (timer) clearTimeout(timer)
-      let callNow = !timer
+      const callNow = !timer
       timer = setTimeout(() => {
         timer = null
       }, time)

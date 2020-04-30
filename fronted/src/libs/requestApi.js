@@ -78,3 +78,21 @@ export function baseLogout () {
   }
   return service.request(request)
 }
+
+export function baseGet (config) {
+  const request = {
+    url: config.url,
+    params: config.data,
+    method: 'GET'
+  }
+  return service.request(request)
+}
+
+export function basePost (config) {
+  const request = {
+    url: config.url,
+    data: config.data,
+    method: 'POST'
+  }
+  return service.request(request)
+}

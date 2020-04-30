@@ -2,7 +2,7 @@ from flask import request, jsonify, g, session, make_response
 from functools import wraps
 from models import User, Authorization
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from init import app
+from init.init_params import app
 from toJosn import JSONHelper
 
 token_generator = Serializer(app.config['SECRET_KEY'], expires_in=3600)
@@ -17,7 +17,7 @@ def verify_token(func):
         }
         # print(request.headers)
         # print(f"token is: {request.headers.get('Lstmxx-Token')}")
-        token = request.headers.get('Lstmxx-Token')
+        token = request.headers.get('chat-Token')
         if token:
             try:
                 data = token_generator.loads(token)
@@ -56,7 +56,7 @@ def verify_super(func):
         }
         # print(request.headers)
         # print(f"token is: {request.headers.get('Lstmxx-Token')}")
-        token = request.headers.get('Lstmxx-Token')
+        token = request.headers.get('chat-Token')
         if token:
             try:
                 data = token_generator.loads(token)

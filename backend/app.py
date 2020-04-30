@@ -1,9 +1,8 @@
 from flask import request, jsonify, g, session, make_response
 import click
-from init import app
+from init.init_params import app, db
 # from toJosn import JSONHelper
 # from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from blueprint.article import article_bp
 from blueprint.file import file_bp
 from blueprint.user import user_bp
 from flask_cors import CORS
@@ -12,11 +11,15 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, ro
 import time
 import os
 
-# @socketio.on('message', namespace="/test_push")
-# def test_push():
-#     socketio.emit('server_response', {
-#         'test': 123
-#     }, namespace="/test_push")
+@app.cli.command()
+@click.option('--drop', is_flag=True, help='create after drop')
+def initdb(drop):
+    # if drop:
+    #     click.confirm('真的要清除数据库吗', abort=True)
+    #     db.drop_all()
+    #     click.echo('Drop success')
+    db.create_all()
+    click.echo('初始化数据库成功')
 
 def background_chat(msg, sid):
     for _ in range(3):
@@ -73,11 +76,10 @@ def disconnect():
     print('Client disconnected', request.sid)
 
 def register_blueprint():
-    app.register_blueprint(article_bp)
     app.register_blueprint(file_bp)
     app.register_blueprint(user_bp)
 
 if __name__ == "__main__":
     register_blueprint()
     # app.run(debug=True)
-    socketio.run(app, debug=True, host="127.0.0.1", port=5000)
+    socketio.run(app, debug=True, host="127.0.0.1", port=4999)

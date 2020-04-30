@@ -7,12 +7,12 @@ export default {
   name: 'UpLoadFile',
   data () {
     return {
-      
+
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  
+
 </style>

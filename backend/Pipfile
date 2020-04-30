@@ -16,6 +16,8 @@ flask-script = "*"
 pika = "*"
 flask-socketio = "*"
 flask-cors = "*"
+install = "*"
+mysql-connector = "*"
 
 [requires]
 python_version = "3.7"

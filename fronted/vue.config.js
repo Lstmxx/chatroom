@@ -1,6 +1,6 @@
+/* eslint-disable */
 const path = require('path')
 
-/* eslint-disable */
 const resolve = dir => {
   return path.join(__dirname, dir)
 }
@@ -13,21 +13,6 @@ module.exports = {
   css: {
     extract: process.env.NODE_ENV === 'production',
     sourceMap: false
-  },
-  configureWebpack: {    
-    resolve: { extensions: [".ts", ".tsx", ".js", ".json"] },    
-    module: {        
-      rules: [    
-        {    
-          test: /\.tsx?$/,    
-          loader: 'ts-loader',    
-          exclude: /node_modules/,    
-          options: {
-            appendTsSuffixTo: [/\.vue$/],    
-          }    
-        }        
-      ]    
-    }    
   },
   chainWebpack: config => {
     config.module
@@ -70,7 +55,7 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [path.resolve(__dirname, 'src/less/base/base.less')]
+      patterns: ['C:\\Users\\Xbei\\Desktop\\tools\\code\\github\\chatroom\\fronted\\src\\less\\base\\base.less']
     }
   }
 }

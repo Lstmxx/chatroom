@@ -7,7 +7,7 @@ export default {
   name: 'ShowToast',
   data () {
     return {
-      
+
     }
   }
 }

@@ -1,8 +1,8 @@
 from flask import request, jsonify, g, session, make_response, Blueprint
-from models import User, Authorization
+from models import User
 from utils import verify_token, token_generator
 from toJosn import JSONHelper
-from init import db
+from init.init_params import db
 import time
 
 user_bp = Blueprint('user', __name__)
@@ -27,14 +27,11 @@ def login():
                 token = token_generator.dumps({
                     'tokenType': 'user',
                     "userId": user.id,
-                    "root_id": user.root_id or 2,
                     'iat': time.time()
                 }).decode('utf-8')
-                authorization = Authorization.query.get(user.root_id)
                 response['data'] = {
                     'token': token,
-                    'userName': user.username,
-                    'role': authorization.name
+                    'userName': user.username
                 }
             else:
                 response['message'] = 'password incorrect'
@@ -60,7 +57,7 @@ def register():
     else:
         has_user = User.query.filter_by(username=values['username']).count()
         if has_user == 0:
-            user = User(username=values['username'], password=values['password'], root_id = 2)
+            user = User(username=values['username'], password=values['password'])
             db.session.add(user)
             db.session.commit()
             response['message'] = 'register success'
@@ -84,11 +81,9 @@ def get_user_info(tokenData):
         userId = tokenData['userId']
         print(userId)
         user = User.query.get(userId)
-        authorization = Authorization.query.get(user.root_id)
         if user:
             response['data']['userInfo'] = {
-                'name': user.username,
-                'role': authorization.name
+                'name': user.username
             }
     return jsonify(response)
 

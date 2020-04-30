@@ -58,7 +58,7 @@ export default {
         (this as any).optionLeave = false
       }, 300)
     },
-    change (index) {
+    change (index: number) {
       if ((this as any).targetKey) {
         (this as any).$emit('input', (this as any).optionList[index][(this as any).targetKey])
       } else {
