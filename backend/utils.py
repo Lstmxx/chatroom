@@ -5,7 +5,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from init.init_params import app
 from toJosn import JSONHelper
 
-token_generator = Serializer(app.config['SECRET_KEY'], expires_in=3600)
+token_generator = Serializer(app.config['SECRET_KEY'], expires_in=3600 * 24)
 
 def verify_token(func):
     @wraps(func)

@@ -1,11 +1,16 @@
 .room-list{
   .col;
-  background-color: rgb(242, 241, 239);
-  height: 100%;
+  // background-color: rgb(242, 241, 239);
+  height: calc(100vh - 120px);
+  width: 300px;
+  background-color: white;
   .list{
     .col;
-    height: 100%;
-    width: 300px;
+    height: calc(100vh - 120px);
     overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .selected{
+    background-color: rgb(210, 215, 211);
   }
 }

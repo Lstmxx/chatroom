@@ -14,6 +14,9 @@ export default {
     RoomList,
     MessageBox
   },
+  mounted () {
+    this.loadRoomList()
+  },
   data () {
     return {
       selectedRoom: '',
@@ -27,6 +30,8 @@ export default {
       }
       get(config).then((responseData) => {
         this.roomList = responseData.roomList
+        this.$socket.emit('join', this.roomList.map(room => room.id))
+        console.log(responseData)
       }).catch((err) => {
         console.log(err)
       })

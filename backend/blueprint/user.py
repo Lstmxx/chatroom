@@ -79,11 +79,11 @@ def get_user_info(tokenData):
     }
     if tokenData['tokenType'] == 'user':
         userId = tokenData['userId']
-        print(userId)
         user = User.query.get(userId)
         if user:
             response['data']['userInfo'] = {
-                'name': user.username
+                'name': user.username,
+                'userId': user.id
             }
     return jsonify(response)
 

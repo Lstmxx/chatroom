@@ -26,6 +26,7 @@ class RoomRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text(length=(2**31)-1))
     create_time = db.Column(db.DateTime, default=datetime.utcnow, index = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index = True)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), index = True)
 
 class UserNotReadRecord(db.Model):
