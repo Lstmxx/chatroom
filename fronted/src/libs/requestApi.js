@@ -47,10 +47,10 @@ export function getServiceToken () {
 
 export function upLoadFile (payload, progressCallback, type) {
   const config = {
-    headers: { 'Content-Type': 'multipart/form-data', 'Lstmxx-Token': getToken() },
+    headers: { 'Content-Type': 'multipart/form-data', 'chat-Token': getToken() },
     onUploadProgress: progressCallback
   }
-  const baseURL = process.env.NODE_ENV === 'development' ? 'http://www.myblog.com/api' : ''
+  const baseURL = '/api'
   return axios.post(baseURL + '/up-load/' + type, payload, config)
 }
 

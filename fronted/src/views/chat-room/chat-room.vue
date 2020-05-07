@@ -30,7 +30,7 @@ export default {
       }
       get(config).then((responseData) => {
         this.roomList = responseData.roomList
-        this.$socket.emit('join', this.roomList.map(room => room.id))
+        this.$socket.emit('join_all', this.roomList.map(room => room.id))
         console.log(responseData)
       }).catch((err) => {
         console.log(err)

@@ -1,6 +1,8 @@
 <template>
   <div class="message-box">
-    <div class="message-content"></div>
+    <div class="message-content">
+      <upLoadFile />
+    </div>
     <div class="message-input">
       <textarea
       class="input"
@@ -13,8 +15,12 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import upLoadFile from '@/components/base/up-load-file'
 export default {
   name: 'MessageBox',
+  components: {
+    upLoadFile
+  },
   computed: {
     ...mapGetters({
       selectedRoom: 'getSelectedRoom'

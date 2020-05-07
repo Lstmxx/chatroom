@@ -22,6 +22,8 @@ class JSONHelper():
         
     @staticmethod
     def to_json_list(target_list):
+        if len(target_list) == 0:
+            return []
         result = []
         for item in target_list:
             jsondata = JSONHelper.to_json(item)

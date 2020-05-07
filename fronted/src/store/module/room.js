@@ -21,6 +21,9 @@ export default {
     },
     SOCKET_received ({}, reponseData) {
       console.log(reponseData)
+    },
+    SOCKET_join_one ({}, responseData) {
+      console.log(responseData)
     }
   }
 }

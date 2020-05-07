@@ -90,7 +90,7 @@ service.interceptors.response.use((response) => {
     return Promise.reject(new Error(response.message || 'Error'))
   } else if (data.status < 200 || data.status >= 300) {
     status = data.status
-    response.message = showStatus(status)
+    response.message = data.message
     return Promise.reject(new Error(response.message || 'Error'))
   } else {
     return { status, data, msg: '成功' }

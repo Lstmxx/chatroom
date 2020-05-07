@@ -11,6 +11,7 @@ class Room(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.utcnow, index = True)
     update_time = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, index = True)
     avatar_image = db.Column(db.String(64), index = True)
+    room_hash_id = db.Column(db.String(32), index = True)
 
 class User(db.Model):
     __tablename__ = 'user'
