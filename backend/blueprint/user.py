@@ -35,10 +35,10 @@ def login():
                 }
             else:
                 response['message'] = 'password incorrect'
-                response['status'] = 200
+                response['status'] = 401
         else:
             response['message'] = f"{values['username']} is no exist"
-            response['status'] = 200
+            response['status'] = 401
     print(response)
     return jsonify(response)
 
@@ -53,7 +53,7 @@ def register():
     required = ['password', 'username']
     if not all(k in values for k in required):
         response['message'] = 'register fail'
-        response['status'] = 200
+        response['status'] = 401
     else:
         has_user = User.query.filter_by(username=values['username']).count()
         if has_user == 0:
@@ -64,7 +64,7 @@ def register():
             response['status'] = 200
         else:
             response['message'] = f"{values['username']} is exist"
-            response['status'] = 200
+            response['status'] = 401
     return jsonify(response), 200
 
 @user_bp.route('/api/user-info', methods=['POST'])
@@ -98,9 +98,9 @@ def get_token():
     }
     print(request.headers)
     token = None
-    if request.headers.get('Lstmxx-Token'):
+    if request.headers.get('chat-Token'):
         try:
-            data = token_generator.loads(request.headers.get('Lstmxx-Token'))
+            data = token_generator.loads(request.headers.get('chat-Token'))
             print(data)
         except:
             token = token_generator.dumps({

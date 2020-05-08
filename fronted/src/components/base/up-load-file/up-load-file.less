@@ -1,13 +1,98 @@
+@height: 148px;
+@width: 148px;
+@closeColor: #f03434;
+@borderColor: rgb(103, 128, 159);
+@crossColor: rgb(103, 128, 159);
+
 .up-load-file{
+  .row;
+  .image-list{
+    .row;
+    .image-wrap{
+      position: relative;
+      margin-right: 20px;
+      height: @height;
+      width: @width;
+      border-radius: 8px;
+      border: 1px solid rgb(103, 128, 159);
+      overflow: hidden;
+      transition: all 0.3s ease-in-out;
+      animation: imageMove 0.3s ease-in-out;
+      img{
+        height: 100%;
+        width: 100%;
+      }
+      .image-option{
+        .row;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        transition: all 0.3s;
+        .preview-button{
+          cursor: pointer;
+          color: white;
+          opacity: 0;
+          transition: all 0.3s;
+        }
+        .delete-image{
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          height: @height / 8;
+          width: @width / 8;
+          cursor: pointer;
+          opacity: 0;
+          transition: all 0.3s;
+          transform: rotate(45deg);
+          .base{
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: @closeColor;
+            border-radius: 4px;
+          }
+          &::before{
+            .base;
+            height: 100%;
+            width: 4px;
+          }
+          &::after{
+            .base;
+            width: 100%;
+            height: 4px;
+          }
+          &:hover{
+            transform: rotate(405deg);
+          }
+        }
+      }
+      &:hover > .image-option {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+      &:hover > .image-option > .preview-button {
+        opacity: 1;
+      }
+      &:hover > .image-option > .delete-image {
+        opacity: 1;
+      }
+    }
+  }
   .add-image{
     position: relative;
     cursor: pointer;
-    height: 148px;
-    width: 148px;
+    height: @height;
+    width: @width;
     border: 1px dashed rgb(103, 128, 159);
     border-radius: 8px;
-    outline: 20px solid rgb(103, 128, 159);
-    outline-offset: -94px;
+    outline: 20px solid @borderColor;
+    outline-offset: calc(0px - (@height / 2) - 20px);
     transition: all 0.1s ease-in-out;
     &:hover{
       border-color: rgb(34, 167, 240);
@@ -21,5 +106,15 @@
       height: 100%;
       width: 100%;
     }
+  }
+}
+@keyframes imageMove{
+  0%{
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
   }
 }

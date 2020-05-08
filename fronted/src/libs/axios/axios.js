@@ -87,10 +87,12 @@ service.interceptors.response.use((response) => {
   const data = response.data
   if (status < 200 || status >= 300) {
     response.message = showStatus(status)
+    Message.error(response.message)
     return Promise.reject(new Error(response.message || 'Error'))
   } else if (data.status < 200 || data.status >= 300) {
     status = data.status
     response.message = data.message
+    Message.error(data.message)
     return Promise.reject(new Error(response.message || 'Error'))
   } else {
     return { status, data, msg: '成功' }

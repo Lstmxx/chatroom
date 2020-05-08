@@ -19,7 +19,7 @@
           <el-input v-model="createRoom.description" autocomplete="off" :maxlength='32' :minlength='32'></el-input>
         </el-form-item>
         <el-form-item label="房间头像" prop="avatarImage">
-          <el-input v-model="createRoom.avatarImage" autocomplete="off" :maxlength='32' :minlength='32'></el-input>
+          <upLoadFile :maxImageNum="1" @on-change="getFilePath"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -42,6 +42,7 @@
 </template>
 <script>
 import RoomItem from '../room-item'
+import upLoadFile from '@/components/base/up-load-file'
 import { post } from '@/libs/request'
 import { mapGetters, mapActions } from 'vuex'
 export default {
@@ -53,7 +54,8 @@ export default {
     }
   },
   components: {
-    RoomItem
+    RoomItem,
+    upLoadFile
   },
   computed: {
     ...mapGetters({
@@ -92,6 +94,9 @@ export default {
     ...mapActions([
       'handleSetSelectedRoom'
     ]),
+    getFilePath (imageList) {
+      this.createRoom.avatarImage = imageList[0].base64Path
+    },
     handleCreateRoom () {
       this.$refs.createRoomForm.validate(valid => {
         if (valid) {
@@ -100,16 +105,22 @@ export default {
             url: '/room/create',
             data: this.createRoom
           }
-          post(config).then((responseData) => {
-            console.log(responseData)
+          post(config).then(() => {
+            this.$Loading.hide()
             this.createRoom.name = ''
             this.createRoomDialog = false
+            this.createRoom = {
+              name: '',
+              description: '',
+              avatarImage: ''
+            }
             this.$message({
               message: '创建成功',
               type: 'success'
             })
             this.$emit('create-room-success')
           }).catch((err) => {
+            this.$Loading.hide()
             this.createRoomDialog = false
             console.log(err)
           })
@@ -126,8 +137,7 @@ export default {
               roomIdHash: this.joinRoom.hashId
             }
           }
-          post(config).then((responseData) => {
-            console.log(responseData)
+          post(config).then(() => {
             this.$Loading.hide()
             this.joinRoomDialog = false
             this.$message({

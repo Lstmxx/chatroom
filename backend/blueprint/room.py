@@ -5,6 +5,7 @@ from toJosn import JSONHelper
 from init.init_params import db
 import hashlib
 import time
+import base64
 
 room_bp = Blueprint('room', __name__)
 
@@ -18,10 +19,18 @@ def room_create(tokenData):
                     description=values['description'],
                     user_set=str(tokenData['userId']),
                     owner=user.id,
-                    avatar_image=values['avatarImage'])
+                    avatar_image='')
         db.session.add(room)
         db.session.flush()
         room.room_hash_id = hashlib.md5(f'{room.id}{time.time()}'.encode('utf-8')).hexdigest()
+        if values['avatarImage']:
+            avatartImageList = values['avatarImage'].split(',')
+            suffix = avatartImageList[0].split('/')[1].split(';')[0]
+            filename = f'room_avatar/{room.room_hash_id}.{suffix}'
+            print(filename)
+            with open(f'media/{filename}', 'wb') as f:
+                f.write(base64.b64decode(avatartImageList[1]))
+            room.avatar_image = filename
         user.room_id_set = f'{user.room_id_set},{room.id}' if user.room_id_set else room.id
         db.session.commit()
         return jsonify({

@@ -1,7 +1,7 @@
 <template>
   <div class="message-box">
     <div class="message-content">
-      <upLoadFile />
+      <upLoadFile :maxImageNum="7" targetUrl="/up-load/image" :multiple="true"/>
     </div>
     <div class="message-input">
       <textarea
