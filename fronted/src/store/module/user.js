@@ -5,7 +5,8 @@ export default {
   state: {
     token: getToken(),
     userName: null,
-    userId: null
+    userId: null,
+    avatarImage: null
   },
   getters: {
     getToken (state) {
@@ -16,6 +17,9 @@ export default {
     },
     getUserId (state) {
       return state.userId
+    },
+    getAvatarImage (state) {
+      return state.avatarImage
     }
   },
   mutations: {
@@ -28,6 +32,9 @@ export default {
     },
     setUserId (state, userId) {
       state.userId = userId
+    },
+    setAvatarImage (state, avatarImage) {
+      state.avatarImage = avatarImage
     }
   },
   actions: {
@@ -35,7 +42,6 @@ export default {
       return new Promise((resolve, reject) => {
         login(config).then((responseData) => {
           commit('setToken', responseData.token)
-          commit('setUserName', responseData.userName)
           resolve(responseData)
         }).catch((err) => {
           reject(err)
@@ -48,7 +54,8 @@ export default {
         getUserInfo().then((responseData) => {
           commit('setToken', getToken())
           commit('setUserName', responseData.userInfo.name)
-          commit('setUserId', responseData.userId)
+          commit('setUserId', responseData.userInfo.userId)
+          commit('setAvatarImage', responseData.userInfo.avatar_image)
           resolve(responseData)
         }).catch((err) => {
           commit('setToken', null)

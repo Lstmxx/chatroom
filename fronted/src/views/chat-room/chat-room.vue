@@ -1,13 +1,13 @@
 <template>
   <div class="chat-room">
     <RoomList @create-room-success="loadRoomList" :roomList="roomList"></RoomList>
-    <MessageBox></MessageBox>
+    <MessageBox v-if="selectedRoom"></MessageBox>
   </div>
 </template>
 <script>
 import RoomList from '@/components/chat-room/room-list'
 import MessageBox from '@/components/chat-room/message-box'
-import { get } from '@/libs/request'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'ChatRoom',
   components: {
@@ -15,26 +15,37 @@ export default {
     MessageBox
   },
   mounted () {
-    this.loadRoomList()
+    this.loadRoomList().then((roomList) => {
+      const request = {
+        roomList: roomList.map(room => room.id),
+        userId: this.userId
+      }
+      console.log(this.userId)
+      this.$socket.emit('join_all', request)
+    }).catch((err) => {
+      console.log(err)
+    })
+  },
+  computed: {
+    ...mapGetters({
+      roomList: 'getRoomList',
+      userId: 'getUserId',
+      selectedRoom: 'getSelectedRoom'
+    })
   },
   data () {
     return {
-      selectedRoom: '',
-      roomList: []
     }
   },
   methods: {
-    loadRoomList () {
-      const config = {
-        url: '/room/list'
-      }
-      get(config).then((responseData) => {
-        this.roomList = responseData.roomList
-        this.$socket.emit('join_all', this.roomList.map(room => room.id))
-        console.log(responseData)
-      }).catch((err) => {
-        console.log(err)
-      })
+    ...mapActions([
+      'loadRoomList'
+    ]),
+    handleCreateJoinRoom (room) {
+      const roomList = this.roomList
+      roomList.push(room)
+      this.$store.commit('setRoomList', roomList)
+      this.$socket.emit('join_one_chat', room)
     }
   }
 }

@@ -1,13 +1,16 @@
 <template>
   <div class="message-box">
     <div class="message-content">
-      <upLoadFile :maxImageNum="7" targetUrl="/up-load/image" :multiple="true"/>
+      <div v-for="(message, index) in messageList[selectedRoom.id]" :key="index">
+        <UserMessage :message="message" :reverse="userId === message.id" v-if="message.type !== 'join'" />
+        <JoinMessage :message="message" v-else/>
+      </div>
     </div>
     <div class="message-input">
       <textarea
       class="input"
       v-model="message"
-      placeholder=""
+      placeholder="打字总会吧？"
       rows="3" />
       <el-button type="success" class="send-button" size="small" @click="sendMessage">发送</el-button>
     </div>
@@ -15,15 +18,19 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import upLoadFile from '@/components/base/up-load-file'
+import UserMessage from '../user-message/index'
+import JoinMessage from '../join-message/index'
 export default {
   name: 'MessageBox',
   components: {
-    upLoadFile
+    UserMessage,
+    JoinMessage
   },
   computed: {
     ...mapGetters({
-      selectedRoom: 'getSelectedRoom'
+      selectedRoom: 'getSelectedRoom',
+      userId: 'getUserId',
+      messageList: 'getMessageList'
     })
   },
   data () {
@@ -33,7 +40,13 @@ export default {
   },
   methods: {
     sendMessage () {
-      this.$socket.emit('user_send_message', { roomId: this.selectedRoom.id, message: this.message })
+      const request = {
+        userId: this.userId,
+        roomId: this.selectedRoom.id,
+        message: this.message,
+        type: 'input'
+      }
+      this.$socket.emit('user_send_message', request)
       this.message = ''
     }
   }

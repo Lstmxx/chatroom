@@ -105,7 +105,7 @@ export default {
             url: '/room/create',
             data: this.createRoom
           }
-          post(config).then(() => {
+          post(config).then((responseData) => {
             this.$Loading.hide()
             this.createRoom.name = ''
             this.createRoomDialog = false
@@ -118,7 +118,7 @@ export default {
               message: '创建成功',
               type: 'success'
             })
-            this.$emit('create-room-success')
+            this.$emit('create-room-success', responseData.room)
           }).catch((err) => {
             this.$Loading.hide()
             this.createRoomDialog = false
@@ -137,14 +137,14 @@ export default {
               roomIdHash: this.joinRoom.hashId
             }
           }
-          post(config).then(() => {
+          post(config).then((responseData) => {
             this.$Loading.hide()
             this.joinRoomDialog = false
             this.$message({
               message: '加入成功',
               type: 'success'
             })
-            this.$emit('create-room-success')
+            this.$emit('create-room-success', responseData.room)
           }).catch((err) => {
             this.$Loading.hide()
             console.log(err)

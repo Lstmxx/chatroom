@@ -34,25 +34,8 @@ def room_create(tokenData):
         user.room_id_set = f'{user.room_id_set},{room.id}' if user.room_id_set else room.id
         db.session.commit()
         return jsonify({
-            'data': JSONHelper.to_json(room),
-            'message': '成功',
-            'status': 200
-        })
-    return jsonify({
-        'data': '',
-        'message': '失败失败',
-        'status': 500
-    })
-
-@room_bp.route('/api/room/list', methods=['GET'])
-@verify_token
-def room_list(tokenData):
-    user = User.query.filter_by(id=tokenData['userId']).first()
-    if user:
-        roomlist = Room.query.filter(Room.id.in_(user.room_id_set.split(','))).all() if user.room_id_set else []
-        return jsonify({
             'data': {
-                'roomList': JSONHelper.to_json_list(roomlist)
+                'room': JSONHelper.to_json(room)
             },
             'message': '成功',
             'status': 200
@@ -73,7 +56,28 @@ def room_join(tokenData):
         user.room_id_set = f'{user.room_id_set},{room.id}' if user.room_id_set else room.id
         db.session.commit()
         return jsonify({
-            'data': {},
+            'data': {
+                'room': JSONHelper.to_json(room)
+            },
+            'message': '成功',
+            'status': 200
+        })
+    return jsonify({
+        'data': '',
+        'message': '失败失败',
+        'status': 500
+    })
+
+@room_bp.route('/api/room/list', methods=['GET'])
+@verify_token
+def room_list(tokenData):
+    user = User.query.filter_by(id=tokenData['userId']).first()
+    if user:
+        roomlist = Room.query.filter(Room.id.in_(user.room_id_set.split(','))).all() if user.room_id_set else []
+        return jsonify({
+            'data': {
+                'roomList': JSONHelper.to_json_list(roomlist)
+            },
             'message': '成功',
             'status': 200
         })

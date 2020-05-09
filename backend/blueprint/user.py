@@ -57,7 +57,7 @@ def register():
     else:
         has_user = User.query.filter_by(username=values['username']).count()
         if has_user == 0:
-            user = User(username=values['username'], password=values['password'])
+            user = User(username=values['username'], password=values['password'], avatar_image='user_avatar/default.jpg')
             db.session.add(user)
             db.session.commit()
             response['message'] = 'register success'
@@ -83,7 +83,8 @@ def get_user_info(tokenData):
         if user:
             response['data']['userInfo'] = {
                 'name': user.username,
-                'userId': user.id
+                'userId': user.id,
+                'avatar_image': user.avatar_image
             }
     return jsonify(response)
 
