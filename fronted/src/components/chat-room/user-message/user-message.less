@@ -7,13 +7,61 @@
     width: 40px;
     border: 1px solid rgb(149, 165, 166, 0.6);
     border-radius: 100%;
-    margin-right: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
   }
-  span{
-    font-size: 14px;
-    color: white;
-    padding: 10px;
-    background-color: rgb(149, 165, 166, 0.6);
-    border-radius: 8px;
+  .message{
+    .col;
+    text-align: left;
+    align-items: flex-start;
+    .user-name{
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .message-box{
+      position: relative;
+      max-width: 300px;
+      font-size: 14px;
+      padding: 10px;
+      background-color: rgb(243, 241, 239);
+      border-radius: 8px;
+      &::after{
+        content: '';
+        position: absolute;
+        border: 6px solid transparent;
+        top: 10px;
+        left: 0px;
+        transform: translateX(-100%);
+        border-right-color: rgb(243, 241, 239);
+      }
+    }
+    .time{
+      font-size: 12px;
+      margin-top: 6px;
+      background-color: rgba(191, 191, 191, 0.6);
+      padding: 6px;
+      border-radius: 4px;
+    }
+  }
+}
+.reverse{
+  flex-direction: row-reverse;
+  img{
+    margin-right: 0px;
+    margin-left: 10px;
+    margin-top: 0px;
+  }
+  .message{
+    align-items: flex-end;
+    .message-box{
+      background-color: rgb(135, 211, 124);
+      &::after{
+        top: 18px;
+        right: 0px;
+        border: 6px solid transparent;
+        transform: translate(100%, -50%);
+        border-left-color: rgb(135, 211, 124);
+      }
+    }
   }
 }

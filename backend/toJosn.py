@@ -1,3 +1,13 @@
+from json import dumps
+from datetime import date, datetime
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
+
 def serialize(model):
     from sqlalchemy.orm import class_mapper
     columns = [c.key for c in class_mapper(model.__class__).columns]
@@ -30,5 +40,8 @@ class JSONHelper():
             result.append(jsondata)
         print(result)
         return result
-        
+
+    @staticmethod
+    def datetime_to_json(date):
+        return dumps(date, default=json_serial)
     

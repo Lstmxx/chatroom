@@ -4,6 +4,8 @@ from models import RoomRecord, UserNotReadRecord, Room, User
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
 from init.init_params import app, db
 from toJosn import JSONHelper
+from datetime import datetime
+from json import dumps
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -29,6 +31,7 @@ def join_chats(message):
                     'name': user.username,
                     'avatarImage': user.avatar_image,
                 },
+                'roomId': roomId,
                 'type': 'join'
             }, namespace='/chatroom', room=roomId)
         # thread = socketio.start_background_task(thread_join_chats, user, message['roomList'])
@@ -39,6 +42,7 @@ def join_one_chat(join):
     """
     room = Room.query.filter_by(id=join['roomId']).first()
     user = User.query.filter_by(id=join['userId']).first()
+    print(join)
     if room and user:
         join_room(room.id)
         emit('received', {
@@ -47,6 +51,7 @@ def join_one_chat(join):
                 'name': user.username,
                 'avatarImage': user.avatar_image,
             },
+            'roomId': room.id,
             'type': 'join'
         }, namespace='/chatroom', room=room)
 
@@ -77,7 +82,8 @@ def user_input(message):
             },
             'message': message['message'],
             'roomId': message['roomId'],
-            'type': message['type']
+            'type': message['type'],
+            'time': datetime.utcnow().isoformat(),
         }
         socketio.emit('received', response,
                         namespace='/chatroom',

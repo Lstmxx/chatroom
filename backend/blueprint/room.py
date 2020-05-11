@@ -35,7 +35,7 @@ def room_create(tokenData):
         db.session.commit()
         return jsonify({
             'data': {
-                'room': JSONHelper.to_json(room)
+                'room': JSONHelper.model_to_json(room)
             },
             'message': '成功',
             'status': 200
@@ -57,7 +57,7 @@ def room_join(tokenData):
         db.session.commit()
         return jsonify({
             'data': {
-                'room': JSONHelper.to_json(room)
+                'room': JSONHelper.model_to_json(room)
             },
             'message': '成功',
             'status': 200

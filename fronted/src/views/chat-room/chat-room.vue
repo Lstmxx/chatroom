@@ -1,6 +1,6 @@
 <template>
   <div class="chat-room">
-    <RoomList @create-room-success="loadRoomList" :roomList="roomList"></RoomList>
+    <RoomList @create-room-success="handleCreateJoinRoom" :roomList="roomList"></RoomList>
     <MessageBox v-if="selectedRoom"></MessageBox>
   </div>
 </template>
@@ -45,7 +45,11 @@ export default {
       const roomList = this.roomList
       roomList.push(room)
       this.$store.commit('setRoomList', roomList)
-      this.$socket.emit('join_one_chat', room)
+      const request = {
+        roomId: room.id,
+        userId: this.userId
+      }
+      this.$socket.emit('join_one_chat', request)
     }
   }
 }

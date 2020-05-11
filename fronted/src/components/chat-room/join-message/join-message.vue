@@ -1,7 +1,7 @@
 <template>
   <div class="join-message">
     <img :src="baseImageUrl + message.user.avatarImage" alt="">
-    <span>{{message.user.userName}} 加入</span>
+    <span>{{message.user.name}} 加入</span>
   </div>
 </template>
 <script>

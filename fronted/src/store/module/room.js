@@ -4,7 +4,8 @@ export default {
   state: {
     selectedRoom: null,
     messageList: {},
-    roomList: []
+    roomList: [],
+    update: false
   },
   getters: {
     getSelectedRoom (state) {
@@ -15,6 +16,9 @@ export default {
     },
     getMessageList (state) {
       return state.messageList
+    },
+    getUpdate (state) {
+      return state.update
     }
   },
   mutations: {
@@ -26,6 +30,9 @@ export default {
     },
     setMessageList (state, messageList) {
       state.messageList = messageList
+    },
+    setUpdate (state, update) {
+      state.update = update
     }
   },
   actions: {
@@ -47,6 +54,9 @@ export default {
       console.log(selectedRoom)
       commit('setSelectedRoom', selectedRoom)
     },
+    updateComplete ({ commit }) {
+      commit('setUpdate', false)
+    },
     SOCKET_received ({ state, commit }, responseData) {
       console.log(responseData)
       const messageList = state.messageList
@@ -54,6 +64,7 @@ export default {
         messageList[responseData.roomId] = []
       }
       messageList[responseData.roomId].push(responseData)
+      commit('setUpdate', state.selectedRoom ? responseData.roomId === state.selectedRoom.id : false)
       commit('setMessageList', messageList)
     },
     SOCKET_join_one ({}, responseData) {
