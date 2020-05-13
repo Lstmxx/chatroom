@@ -28,7 +28,7 @@
             autocomplete="on"
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
+            @keyup.enter.native="onLogin"
           />
         </el-form-item>
       </el-tooltip>

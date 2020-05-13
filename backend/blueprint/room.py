@@ -53,6 +53,14 @@ def room_join(tokenData):
     user = User.query.filter_by(id=tokenData['userId']).first()
     room = Room.query.filter_by(room_hash_id=values['roomIdHash']).first()
     if user and room:
+        roomIdList = user.room_id_set.split(',') if user.room_id_set else []
+        if str(room.id) in roomIdList:
+            return jsonify({
+                'data': '',
+                'message': '有了有了不可以再加了',
+                'status': 500
+            })
+            return
         user.room_id_set = f'{user.room_id_set},{room.id}' if user.room_id_set else room.id
         db.session.commit()
         return jsonify({

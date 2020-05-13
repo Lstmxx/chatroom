@@ -6,6 +6,7 @@ from init.init_params import app, db
 from toJosn import JSONHelper
 from datetime import datetime
 from json import dumps
+from time import sleep
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -70,7 +71,6 @@ def close_chat(message):
 def user_input(message):
     """获取用户输入
     """
-    print(message)
     userId = message['userId']
     user = User.query.filter_by(id=message['userId']).first()
     if user:

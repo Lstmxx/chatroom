@@ -1,16 +1,20 @@
 <template>
   <div :class="messageClass">
-    <img :src="baseImageUrl + message.user.avatarImage" alt="">
-    <div class="message">
+    <img class="head-img" :src="baseImageUrl + message.user.avatarImage" alt="">
+    <div class="message img">
       <span class="user-name" v-if="!reverse">{{message.user.name}}</span>
-      <span class="message-box">{{message.message}}</span>
-      <span class="time">{{time}}</span>
+      <div class="content" id="">
+        <svg class="message-loading" width="26" height="26" viewBox="0 0 104 104" v-if="loading">
+          <circle class="path" id="circle" cx="52" cy="52" r="50" fill="none" stroke-width="4"/>
+        </svg>
+        <div class="user-message-box" v-html="message.message"></div>
+      </div>
+      <span class="time" v-if="time">{{time}}</span>
     </div>
   </div>
 </template>
 <script>
 import { baseImageUrl } from '@/web-config/config'
-import { normalizeTimeDetail } from '@/libs/utility/time'
 export default {
   name: 'UserMessage',
   props: {
@@ -21,14 +25,19 @@ export default {
     reverse: {
       default: false,
       type: Boolean
+    },
+    time: {
+      default: '',
+      type: String
+    },
+    loading: {
+      default: false,
+      type: Boolean
     }
   },
   computed: {
     messageClass () {
       return this.reverse ? 'user-message reverse' : 'user-message'
-    },
-    time () {
-      return this.message ? normalizeTimeDetail(this.message.time) : ''
     }
   },
   data () {
@@ -38,6 +47,6 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import './user-message.less';
 </style>

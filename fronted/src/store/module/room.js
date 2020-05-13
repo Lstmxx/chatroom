@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { get } from '@/libs/request'
+import { normalizeTimeDetail } from '@/libs/utility/time'
 export default {
   state: {
     selectedRoom: null,
@@ -57,14 +58,40 @@ export default {
     updateComplete ({ commit }) {
       commit('setUpdate', false)
     },
-    SOCKET_received ({ state, commit }, responseData) {
-      console.log(responseData)
+    userInput ({ commit, state }, inputData) {
       const messageList = state.messageList
-      if (!messageList[responseData.roomId]) {
-        messageList[responseData.roomId] = []
+      if (!messageList[inputData.roomId]) {
+        messageList[inputData.roomId] = []
       }
-      messageList[responseData.roomId].push(responseData)
-      commit('setUpdate', state.selectedRoom ? responseData.roomId === state.selectedRoom.id : false)
+      messageList[inputData.roomId].push(inputData)
+      commit('setUpdate', true)
+      commit('setMessageList', messageList)
+    },
+    SOCKET_received ({ state, rootState, commit }, responseData) {
+      const messageList = state.messageList
+      const user = rootState.user
+      console.log(user)
+      responseData.time = normalizeTimeDetail(responseData.time)
+      if (user.userId === responseData.user.id && responseData.type !== 'join') {
+        for (let i = messageList[responseData.roomId].length - 1; i > 0; i--) {
+          if (messageList[responseData.roomId][i].user.id === user.userId) {
+            messageList[responseData.roomId][i].loading = false
+            messageList[responseData.roomId][i].time = responseData.time
+            break
+          }
+        }
+        if (!state.update) {
+          commit('setUpdate', true)
+        }
+      } else {
+        if (!messageList[responseData.roomId]) {
+          messageList[responseData.roomId] = []
+        }
+        messageList[responseData.roomId].push(responseData)
+        if (!state.update) {
+          commit('setUpdate', state.selectedRoom ? responseData.roomId === state.selectedRoom.id : false)
+        }
+      }
       commit('setMessageList', messageList)
     },
     SOCKET_join_one ({}, responseData) {

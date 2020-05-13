@@ -1,8 +1,28 @@
+.img{
+  img{
+    max-width: 300px;
+    overflow: hidden;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+  }
+}
+.message-loading{
+  transform-origin: center center;
+  margin-top: 7px;
+  margin-right: 10px;
+  animation: rotate 1.5s infinite ease-in-out;
+  .path{
+    stroke-dasharray: 314;
+    stroke-dashoffset: 0;
+    stroke: #d62d20;
+    animation: dash 1.5s infinite ease-in-out, color 2s infinite ease-in-out;
+  }
+}
 .user-message{
   .row;
   padding: 10px;
   align-items: flex-start;
-  img{
+  .head-img{
     height: 40px;
     width: 40px;
     border: 1px solid rgb(149, 165, 166, 0.6);
@@ -18,21 +38,24 @@
       font-size: 12px;
       margin-bottom: 4px;
     }
-    .message-box{
-      position: relative;
-      max-width: 300px;
-      font-size: 14px;
-      padding: 10px;
-      background-color: rgb(243, 241, 239);
-      border-radius: 8px;
-      &::after{
-        content: '';
-        position: absolute;
-        border: 6px solid transparent;
-        top: 10px;
-        left: 0px;
-        transform: translateX(-100%);
-        border-right-color: rgb(243, 241, 239);
+    .content{
+      .row;
+      .user-message-box{
+        position: relative;
+        max-width: 300px;
+        font-size: 14px;
+        padding: 10px;
+        background-color: rgb(243, 241, 239);
+        border-radius: 4px;
+        &::after{
+          content: '';
+          position: absolute;
+          border: 6px solid transparent;
+          top: 10px;
+          left: 0px;
+          transform: translateX(-100%);
+          border-right-color: rgb(243, 241, 239);
+        }
       }
     }
     .time{
@@ -46,22 +69,66 @@
 }
 .reverse{
   flex-direction: row-reverse;
-  img{
+  .head-img{
     margin-right: 0px;
     margin-left: 10px;
     margin-top: 0px;
   }
   .message{
     align-items: flex-end;
-    .message-box{
-      background-color: rgb(135, 211, 124);
-      &::after{
-        top: 18px;
-        right: 0px;
-        border: 6px solid transparent;
-        transform: translate(100%, -50%);
-        border-left-color: rgb(135, 211, 124);
+    .content{
+      .user-message-box{
+        background-color: rgb(135, 211, 124);
+        &::after{
+          top: 18px;
+          right: 0px;
+          border: 6px solid transparent;
+          transform: translate(100%, -50%);
+          border-left-color: rgb(135, 211, 124);
+        }
       }
     }
+  }
+}
+
+@keyframes dash {
+  0%{
+    stroke-dashoffset: 0;
+  }
+  50%{
+    stroke-dashoffset: -314;
+  }
+  100%{
+    stroke-dashoffset: -618;
+  }
+}
+
+@keyframes rotate {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes color {
+  0%{
+    stroke: #d62d20;
+  }
+  20%{
+    stroke: #0057e7;
+  }
+  40%{
+    stroke: #008744;
+  }
+  60%{
+    stroke: #ffa700;
+  }
+  80%{
+    stroke: rgb(142, 68, 173)
+  }
+  100%{
+    stroke: #d62d20;
   }
 }
