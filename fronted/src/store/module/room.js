@@ -74,7 +74,7 @@ export default {
       responseData.time = normalizeTimeDetail(responseData.time)
       if (user.userId === responseData.user.id && responseData.type !== 'join') {
         for (let i = messageList[responseData.roomId].length - 1; i > 0; i--) {
-          if (messageList[responseData.roomId][i].user.id === user.userId) {
+          if (messageList[responseData.roomId][i].user.id === user.userId && responseData.id === messageList[responseData.roomId][i].id) {
             messageList[responseData.roomId][i].loading = false
             messageList[responseData.roomId][i].time = responseData.time
             break

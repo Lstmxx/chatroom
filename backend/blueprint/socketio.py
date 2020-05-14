@@ -82,6 +82,7 @@ def user_input(message):
             },
             'message': message['message'],
             'roomId': message['roomId'],
+            'id': message['id'],
             'type': message['type'],
             'time': datetime.utcnow().isoformat(),
         }

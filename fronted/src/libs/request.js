@@ -11,11 +11,17 @@ import {
   basePost
 } from './requestApi'
 // import { setToken } from './utility/token'
+import router from '@/router/index'
 
 function checkToken (promiseCallBack, config, resolve, reject) {
   promiseCallBack(config).then((response) => {
     resolve(response.data.data)
   }).catch((err) => {
+    if (status === 401) {
+      router.replace({
+        name: 'Login'
+      })
+    }
     reject(err)
   })
 }
@@ -64,7 +70,6 @@ export function upLoad (config, callBack, type) {
 export function getUserInfo () {
   return new Promise((resolve, reject) => {
     baseGetUserInfo().then((response) => {
-      console.log(response)
       resolve(response.data.data)
     }).catch((err) => {
       reject(err)

@@ -68,6 +68,7 @@ export default {
       util.copyToClip(this.selectedRoom.room_hash_id)
     },
     sendMessage (message) {
+      const messageId = Number(new Date())
       const messageContext = {
         user: {
           id: this.userId,
@@ -75,6 +76,7 @@ export default {
           avatarImage: this.avatarImage
         },
         roomId: this.selectedRoom.id,
+        id: messageId,
         message,
         loading: true,
         type: 'input'
@@ -82,6 +84,7 @@ export default {
       const request = {
         userId: this.userId,
         roomId: this.selectedRoom.id,
+        id: messageId,
         message,
         type: 'input'
       }

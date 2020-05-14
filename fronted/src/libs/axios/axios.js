@@ -93,7 +93,10 @@ service.interceptors.response.use((response) => {
     status = data.status
     response.message = data.message
     Message.error(data.message)
-    return Promise.reject(new Error(response.message || 'Error'))
+    return Promise.reject(new Error({
+      status,
+      message: response.message || ''
+    }))
   } else {
     return { status, data, msg: '成功' }
   }
