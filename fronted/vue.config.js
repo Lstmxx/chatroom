@@ -60,7 +60,7 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: ['C:\\Users\\Xbei\\Desktop\\tools\\code\\github\\chatroom\\fronted\\src\\less\\base\\base.less']
+      patterns: ['./src/less/base/base.less']
     }
   }
 }
