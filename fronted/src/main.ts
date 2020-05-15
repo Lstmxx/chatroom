@@ -22,7 +22,7 @@ Vue.use(new VueSocketio({
   connection: 'http://www.chatroom.com/chatroom',
   vuex: {
     store,
-    acitonPrefix: 'SOCKET_'
+    actionPrefix: 'SOCKET_'
   }
 }))
 new Vue({
