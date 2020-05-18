@@ -15,3 +15,4 @@ RUN npm run build
 # 选择更小体积的基础镜像
 FROM nginx:latest
 COPY --from=builder /code/dist /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/chatroom.conf
