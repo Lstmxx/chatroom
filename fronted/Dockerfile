@@ -1,9 +1,17 @@
-FROM node:alpine
+FROM node:alpine as builder
 
 ENV PROJECT_ENV production
-WORKDIR /code
-ADD . /code
-RUN npm install && npm run build && npm install -g http-server
-EXPOSE 80
+# ENV NODE_ENV production
 
-CMD http-server ./pubilc -p 80
+# http-server 不变动也可以利用缓存
+WORKDIR /code
+
+ADD package.json /code
+RUN npm install
+
+ADD . /code
+RUN npm run build
+
+# 选择更小体积的基础镜像
+FROM nginx:latest
+COPY --from=builder /code/dist /usr/share/nginx/html
