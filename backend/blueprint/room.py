@@ -23,6 +23,7 @@ def room_create(tokenData):
         db.session.add(room)
         db.session.flush()
         room.room_hash_id = hashlib.md5(f'{room.id}{time.time()}'.encode('utf-8')).hexdigest()
+        room.user_set = f'{room.user_set},{user.id}' if room.user_set else user.id
         if values['avatarImage']:
             avatartImageList = values['avatarImage'].split(',')
             suffix = avatartImageList[0].split('/')[1].split(';')[0]
@@ -61,6 +62,7 @@ def room_join(tokenData):
                 'status': 500
             })
             return
+        room.user_set = f'{room.user_set},{user.id}' if room.user_set else user.id
         user.room_id_set = f'{user.room_id_set},{room.id}' if user.room_id_set else room.id
         db.session.commit()
         return jsonify({

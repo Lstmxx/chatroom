@@ -1,5 +1,5 @@
 from flask import request, jsonify, g, session, make_response, Blueprint
-from models import User
+from models import User, Room
 from utils import verify_token, token_generator
 from toJosn import JSONHelper
 from init.init_params import db
@@ -57,8 +57,14 @@ def register():
     else:
         has_user = User.query.filter_by(username=values['username']).count()
         if has_user == 0:
-            user = User(username=values['username'], password=values['password'], avatar_image='user_avatar/default.jpg')
+            room = Room.query.filter_by(id=1).first()
+            user = User(username=values['username'],
+                        password=values['password'],
+                        room_id_set=str(room.id),
+                        avatar_image='user_avatar/default.jpg')
             db.session.add(user)
+            db.session.flush()
+            room.user_set = f'{room.user_set},{user.id}' if room.user_set else user.id
             db.session.commit()
             response['message'] = 'register success'
             response['status'] = 200
