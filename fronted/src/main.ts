@@ -19,7 +19,7 @@ Vue.prototype.$PreviewImage = PreviewImage
 
 Vue.use(new VueSocketio({
   debug: true,
-  connection: 'http://www.chatroom.com/chatroom',
+  connection: '/chatroom',
   vuex: {
     store,
     actionPrefix: 'SOCKET_'
