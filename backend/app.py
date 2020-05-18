@@ -1,3 +1,5 @@
+#-- coding:UTF-8 --
+
 from flask import request, jsonify, g, session, make_response
 import click
 from blueprint.file import file_bp
