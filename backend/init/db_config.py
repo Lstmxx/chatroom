@@ -1,5 +1,4 @@
 import os
 import sys
 
-SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:123456@localhost/chatroom?auth_plugin=mysql_native_password'
-
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@172.17.0.1:3306/chatroom'
