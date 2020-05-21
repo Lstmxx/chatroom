@@ -20,6 +20,7 @@ install = "*"
 mysql-connector = "*"
 eventlet = "*"
 pymysql = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.7"
