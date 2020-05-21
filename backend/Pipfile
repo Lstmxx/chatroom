@@ -18,6 +18,8 @@ flask-socketio = "*"
 flask-cors = "*"
 install = "*"
 mysql-connector = "*"
+eventlet = "*"
+pymysql = "*"
 
 [requires]
 python_version = "3.7"

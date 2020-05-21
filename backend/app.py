@@ -28,4 +28,4 @@ def register_blueprint():
 if __name__ == "__main__":
     register_blueprint()
     # app.run(debug=True)
-    socketio.run(app, debug=True, host="127.0.0.1", port=4999)
+    socketio.run(app, host="0.0.0.0", port=80)
