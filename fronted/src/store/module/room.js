@@ -1,12 +1,16 @@
 /* eslint-disable */
-import { get } from '@/libs/request'
+import { get, post } from '@/libs/request'
 import { normalizeTimeDetail } from '@/libs/utility/time'
 export default {
   state: {
     selectedRoom: null,
     messageList: {},
     roomList: [],
-    update: false
+    update: false,
+    pageData: {
+      page: 1,
+      pageSize: 10
+    }
   },
   getters: {
     getSelectedRoom (state) {
@@ -20,6 +24,9 @@ export default {
     },
     getUpdate (state) {
       return state.update
+    },
+    getPageData (state) {
+      return state.pageData
     }
   },
   mutations: {
@@ -34,6 +41,9 @@ export default {
     },
     setUpdate (state, update) {
       state.update = update
+    },
+    setPageData (state, pageData) {
+      state.pageData = pageData
     }
   },
   actions: {
@@ -51,9 +61,44 @@ export default {
         })
       })
     },
-    handleSetSelectedRoom ({ commit }, selectedRoom) {
-      console.log(selectedRoom)
+    async handleSetSelectedRoom ({ commit, state }, selectedRoom) {
       commit('setSelectedRoom', selectedRoom)
+      const messageList = state.messageList
+      await new Promise((resolve, reject) => {
+        const config = {
+          url: '/room-record/page',
+          data: {
+            room_id: selectedRoom.id,
+            page: 1,
+            pageSize: 15
+          }
+        }
+        post(config).then((responseData) => {
+          const usrMap = {}
+          responseData.userList.forEach(data => {
+            usrMap[data.id] = data
+          })
+          const recordList = responseData.recordList.map(record => {
+            return {
+              id: '',
+              time: normalizeTimeDetail(record.createTime),
+              type: 'input',
+              roomId: record.roomId,
+              message: record.content,
+              loading: false,
+              user: usrMap[record.userId]
+            }
+          })
+          messageList[selectedRoom.id] = recordList.reverse()
+          commit('setMessageList', messageList)
+          if (!state.update) {
+            commit('setUpdate', true)
+          }
+          resolve()
+        }).catch((err) => {
+          reject(err)
+        })
+      })
     },
     updateComplete ({ commit }) {
       commit('setUpdate', false)
@@ -70,7 +115,6 @@ export default {
     SOCKET_received ({ state, rootState, commit }, responseData) {
       const messageList = state.messageList
       const user = rootState.user
-      console.log(user)
       responseData.time = normalizeTimeDetail(responseData.time)
       if (user.userId === responseData.user.id && responseData.type !== 'join') {
         for (let i = messageList[responseData.roomId].length - 1; i > 0; i--) {

@@ -86,6 +86,9 @@ def user_input(message):
             'type': message['type'],
             'time': datetime.utcnow().isoformat(),
         }
+        roomRecord = RoomRecord(content=message['message'], user_id=user.id, room_id=message['roomId'])
+        db.session.add(roomRecord)
+        db.session.commit()
         socketio.emit('received', response,
                         namespace='/chatroom',
                         room=message['roomId'])

@@ -38,7 +38,6 @@ export default {
   },
   watch: {
     selectedRoom () {
-      console.log('hel')
       this.setMessageContentScroll()
     },
     isUpdate () {
