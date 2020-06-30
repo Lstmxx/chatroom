@@ -18,7 +18,7 @@ Vue.prototype.$Loading = Loading
 Vue.prototype.$PreviewImage = PreviewImage
 
 Vue.use(new VueSocketio({
-  debug: false,
+  debug: true,
   connection: '/chatroom',
   vuex: {
     store,

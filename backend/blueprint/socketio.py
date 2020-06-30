@@ -67,6 +67,10 @@ def close_chat(message):
     """
     print('hwlo')
 
+@socketio.on('test_input', namespace='/chatroom')
+def test_input(message):
+    socketio.emit('test_received', '收到啦', namespace='/chatroom')
+
 @socketio.on('user_send_message', namespace='/chatroom')
 def user_input(message):
     """获取用户输入

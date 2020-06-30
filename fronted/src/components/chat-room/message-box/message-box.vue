@@ -89,6 +89,7 @@ export default {
       }
       this.userInput(messageContext)
       this.$socket.emit('user_send_message', request)
+      this.$socket.emit('test_input', message)
     }
   }
 }

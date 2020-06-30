@@ -115,6 +115,10 @@ export default {
     SOCKET_received ({ state, rootState, commit }, responseData) {
       const messageList = state.messageList
       const user = rootState.user
+      const j = new Date()
+      j.getTimezoneOffset
+      responseData.time = new Date(responseData.time)
+      responseData.time.setHours(responseData.time.getHours() - responseData.time.getTimezoneOffset() / 60)
       responseData.time = normalizeTimeDetail(responseData.time)
       if (user.userId === responseData.user.id && responseData.type !== 'join') {
         for (let i = messageList[responseData.roomId].length - 1; i > 0; i--) {
@@ -139,6 +143,9 @@ export default {
       commit('setMessageList', messageList)
     },
     SOCKET_join_one ({}, responseData) {
+      console.log(responseData)
+    },
+    SOCKET_test_received ({}, responseData) {
       console.log(responseData)
     }
   }
